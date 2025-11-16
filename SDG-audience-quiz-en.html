@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDGs Exhibition Audience Quiz (English)</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; margin: 0; }
+    header { padding: 24px 16px; }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 16px 40px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+    .q { font-weight: 600; }
+    .opts { margin-top: 8px; }
+    label { display: block; margin: 6px 0; cursor: pointer; }
+    button { padding: 10px 16px; border-radius: 8px; border: 1px solid #111; background: #111; color: #fff; cursor: pointer; }
+    button.secondary { background: #fff; color: #111; margin-left: 8px; }
+    .result { display: none; border-left: 4px solid #111; padding: 12px 16px; background: #f8fafc; }
+    .muted { color: #6b7280; font-size: 14px; }
+    footer { padding: 16px; font-size: 12px; color: #6b7280; text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <h1>SDGs Exhibition Audience Quiz</h1>
+    <div class="muted">Answer 5 questions to get your recommended pathway (Professionals/Hobbyists vs Explorers).</div>
+  </header>
+
+  <main class="wrap">
+    <form id="quiz">
+      <!-- Q1 Reading style -->
+      <div class="card">
+        <div class="q">1) Which reading style fits you better?</div>
+        <div class="opts">
+          <label><input type="radio" name="q1" value="2" required> A. Read long text, check footnotes, and may download materials (professionals)</label>
+          <label><input type="radio" name="q1" value="-2"> B. Skim fast, more focus on images and interactions (explorers)</label>
+        </div>
+      </div>
+
+      <!-- Q2 SDG courses/events -->
+      <div class="card">
+        <div class="q">2) Have you taken any courses or participated in any events related to UNESCO’s Sustainable Development Goals (SDGs) at school or in other institutions?</div>
+        <div class="opts">
+          <label><input type="radio" name="q2" value="2" required> A. Yes (professionals)</label>
+          <label><input type="radio" name="q2" value="-2"> B. No (explorers)</label>
+        </div>
+      </div>
+
+      <!-- Q3 Main purpose -->
+      <div class="card">
+        <div class="q">3) What is your main purpose for visiting this exhibition?</div>
+        <div class="opts">
+          <label><input type="radio" name="q3" value="2" required> A. Deepening my professional knowledge or research in specific fields (Professionals/Hobbyists)</label>
+          <label><input type="radio" name="q3" value="-2"> B. Broadening my horizons, satisfying curiosity, and embarking on an interesting intellectual exploration (Explorers)</label>
+        </div>
+      </div>
+
+      <!-- Q4 SDG knowledge gradient -->
+      <div class="card">
+        <div class="q">4) What does the term "SDG" first bring to your mind?</div>
+        <div class="opts">
+          <label><input type="radio" name="q4" value="-2" required> A. An unfamiliar acronym</label>
+          <label><input type="radio" name="q4" value="-1"> B. A general concept related to environment or development</label>
+          <label><input type="radio" name="q4" value="1"> C. I know it stands for "Sustainable Development Goals"</label>
+          <label><input type="radio" name="q4" value="2"> D. I can name most or all of the 17 goals</label>
+        </div>
+      </div>
+
+      <!-- Q5 Viewing time -->
+      <div class="card">
+        <div class="q">5) What is your expected viewing time for the SDGs-themed sections?</div>
+        <div class="opts">
+          <label><input type="radio" name="q5" value="2" required> A. Over 1 hour (willing to deeply study SDGs–exhibit correlations and background) (professional)</label>
+          <label><input type="radio" name="q5" value="-2"> B. 20–40 minutes (prefer a concise experience of SDGs-related highlights) (explorer)</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <button type="submit">Submit & View Result</button>
+        <button type="reset" class="secondary">Reset</button>
+        <div id="result" class="result" style="margin-top:12px;"></div>
+        <div class="muted" style="margin-top:8px;">
+          Scoring: sum option values. Threshold: total ≥ 5 → Professionals/Hobbyists; total &lt; 5 → Explorers.
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <div>SDGs Audience Quiz · © Your Team</div>
+  </footer>
+
+  <script>
+    document.getElementById('quiz').addEventListener('submit', function(e){
+      e.preventDefault();
+      const form = e.target;
+      const values = ['q1','q2','q3','q4','q5'].map(name => Number(new FormData(form).get(name)));
+      if(values.some(v => Number.isNaN(v))) return;
+      const score = values.reduce((a,b)=>a+b,0);
+      const result = document.getElementById('result');
+      let title, advice;
+      if(score >= 5){
+        title = 'Recommendation: Professionals/Hobbyists pathway';
+        advice = 'Your reading style, time investment, or SDGs knowledge suggests a professional orientation. We recommend the pathway prioritizing scholarly citations, high-res details, full metadata, and downloads.';
+      } else {
+        title = 'Recommendation: Explorers pathway';
+        advice = 'You prefer quick browsing and exploratory experiences. We recommend the pathway that emphasizes clear navigation, cue cards, short labels, and interactive guidance.';
+      }
+      result.innerHTML = `<strong>${title}</strong><br>Total score: <strong>${score}</strong><br><br>${advice}`;
+      result.style.display = 'block';
+      result.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  </script>
+</body>
+</html>
